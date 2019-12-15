@@ -67,12 +67,12 @@ def build_Y(start_date, end_date):
         elif(subresult['Put_take_profit'][i] == 1):
             y = -1
         Y.append(y)
-    return np.array(Y)
+    return np.array(Y), subresult
 
 def build_XY(start_date, end_date, selected_features, feature_days):
     X = build_X(start_date, end_date, selected_features, feature_days)
-    Y = build_Y(start_date, end_date)
-    return X, Y
+    Y, result = build_Y(start_date, end_date)
+    return X, Y, result
 
 def update_local_data(today):
     fitx_pkl = {}

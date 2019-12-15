@@ -2,3 +2,5 @@ feature.py
 temp*
 *config.py
 .vscode
+__pycache__
+.ipynb_checkpoints

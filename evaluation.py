@@ -1,4 +1,4 @@
-from sys import stderr
+from sys import stderr, stdout
 from re import sub
 from pprint import pformat
 
@@ -10,6 +10,7 @@ def score(te, result):
     # data {{{
     fee = 1
     stop_loss = 20
+    return_roi = []
 
     log = { # {{{
         'actions': [],
@@ -59,11 +60,12 @@ def score(te, result):
     # output {{{
     for action in log['actions']:
         print(','.join(map(str, action)))
+        return_roi.append(action[3])
 
     del log['actions']
     del log['consecutive_loss'], log['consecutive_loss_days']
-    # del log['nonzero_precision'], log['down_recall'], log['up_recall']
-    
     print_dict(log)
     print_dict(log, file=stderr)
+
+    return return_roi
     # }}}

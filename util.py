@@ -1,5 +1,6 @@
 import pandas as pd
 import numpy as np
+from sklearn import manifold, datasets
 
 def plot_roi(roi, result):
     roi_df = pd.DataFrame(roi, index=result.Date, columns=['ROI'])
@@ -14,3 +15,7 @@ def categori_reverse(pred):
         if 2 == z: pred_z.append(-1)
         else: pred_z.append(z)
     return pred_z
+
+def tsne_trans(input):
+    tsne = manifold.TSNE(n_components=2, init='pca', random_state=501)
+    return tsne.fit_transform(input)

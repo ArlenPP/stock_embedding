@@ -57,7 +57,7 @@ def score(te, result):
         # if None != trade_time:
         log['actions'].append((r['Date'], z, profit, log['roi'], log['roi'] * 200 + 100000, time))
         # }}}
-    # output {{{
+    # output {{1{
     for action in log['actions']:
         print(','.join(map(str, action)))
         return_roi.append(action[3])

@@ -2,10 +2,10 @@ import pandas as pd
 import numpy as np
 from sklearn import manifold, datasets
 
-def plot_roi(roi, result):
+def plot_roi(roi, result, plot=False):
     roi_df = pd.DataFrame(roi, index=result.Date, columns=['ROI'])
-    fig = roi_df.plot(rot=75)
-    return fig
+    if plot: fig = roi_df.plot(rot=75)
+    return roi_df
 
 
 def categori_reverse(pred):

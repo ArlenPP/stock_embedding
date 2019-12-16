@@ -59,12 +59,12 @@ def score(te, result):
         # }}}
     # output {{1{
     for action in log['actions']:
-        print(','.join(map(str, action)))
+        # print(','.join(map(str, action)))
         return_roi.append(action[3])
 
     del log['actions']
     del log['consecutive_loss'], log['consecutive_loss_days']
-    print_dict(log)
+    # print_dict(log)
     print_dict(log, file=stderr)
 
     return return_roi

@@ -12,7 +12,7 @@ from gen_data_config import gen_data_config
 import feature
 
 fitx = []
-result = []
+result = {}
 base_path = gen_data_config['base_path']
 
 def generate_feature(fitx_df, computed_features): # {{{
@@ -57,8 +57,8 @@ def build_X(start_date, end_date, selected_features, feature_days): # {{{
     return np.array(X)
     # }}}
 
-def build_Y(start_date, end_date):
-    subresult = result.loc[start_date : end_date]
+def build_Y(start_date, end_date, ts_id):
+    subresult = result[ts_id].loc[start_date : end_date]
     Y = []
     for i in range(len(subresult)):
         y = 0
@@ -69,16 +69,17 @@ def build_Y(start_date, end_date):
         Y.append(y)
     return np.array(Y), subresult
 
-def build_XY(start_date, end_date, selected_features, feature_days):
+def build_XY(start_date, end_date, selected_features, feature_days, ts_id):
     X = build_X(start_date, end_date, selected_features, feature_days)
-    Y, result = build_Y(start_date, end_date)
-    return X, Y, result
+    Y, subresult = build_Y(start_date, end_date, ts_id)
+    return X, Y, subresult
 
 def update_local_data(today):
     fitx_pkl = {}
     db = StockDB(**db_config)
     fitx_pkl['fitx_df'] = db.read_data("1999-01-01", today, True)
-    fitx_pkl['result'] = db.read_result("1999-01-01", today, gen_data_config['result_id'])
+    for i in range(1,6):
+        fitx_pkl[f'result_{i}'] = db.read_result("1999-01-01", today, i)
     dump(fitx_pkl, open(base_path+today+".pkl", "wb"))
     return fitx_pkl
 def check_file_date(today):
@@ -102,6 +103,7 @@ def smart_update():
         with open(base_path+today+".pkl", 'rb') as f: 
             fitx_pkl = load(f)
     fitx = generate_feature(fitx_pkl['fitx_df'], gen_data_config['computed_features'])
-    result = fitx_pkl['result']
+    for i in range(1, 6):
+        result[i] = fitx_pkl[f'result_{i}']
 
 smart_update()
